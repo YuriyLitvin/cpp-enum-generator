@@ -43,11 +43,8 @@ void EnumTest::testColor1()
     c1 = Color1(Color1(Color1::Green));
     QCOMPARE(c1.toString(), "Green");
 
-    // Color1(int val)
-    QCOMPARE(Color1(Color1::Green).toInt(), c1.toInt());
-
     // Color1(const char * val)
-    QCOMPARE(Color1("Green").toInt(), c1.toInt());
+    QCOMPARE(Color1("Green"), c1);
 
     c1 = Color1::Blue; // operator =(Value val)
     QVERIFY(c1 == Color1::Blue); // operator ==(Value val)
@@ -57,13 +54,6 @@ void EnumTest::testColor1()
 
     // isValid()
     QVERIFY(c1.isValid());
-
-    // fromInt(int val), toInt()
-    QVERIFY(Color1::fromInt(int(Color1::White)).toInt() == int(Color1::White));
-    QVERIFY(Color1::fromInt(int(Color1::Invalid)).toInt() == int(Color1::Invalid));
-
-    // fromString(const char * val), toString()
-    QCOMPARE(Color1::fromString("Black").toString(), "Black");
 
     // enumName()
     QCOMPARE(Color1::enumName(), "Color1");
@@ -107,13 +97,6 @@ void EnumTest::testColor2()
     // isValid()
     QVERIFY(c1.isValid());
 
-    // fromInt(int val), toInt()
-    QVERIFY(Color2::fromInt(0xFFFFFF).toInt() == 0xFFFFFF);
-    QVERIFY(Color2::fromInt(-1).toInt() == -1);
-
-    // fromString(const char * val), toString()
-    QCOMPARE(Color2::fromString("Black").toString(), "Black");
-
     // enumName()
     QCOMPARE(Color2::enumName(), "Color2");
 }
@@ -121,47 +104,32 @@ void EnumTest::testColor2()
 
 void EnumTest::testColor3()
 {
-    // Color3()
-    Color3 c3;
-    QCOMPARE(c3.isValid(), false);
-    QVERIFY(c3 == Color3::Invalid);
-    QCOMPARE(c3.toInt(), -1);
-    QCOMPARE(c3.toString(), "Invalid");
+    // Создание объекта перечисления и проверка невалидности его значения
+    Color3 colorPen;
+    QCOMPARE(colorPen.isValid(), false); // isValid()
+    QVERIFY(colorPen == Color3::Invalid); // operator ==(Value val)
 
-    // Color3(Value val)
-    c3 = Color3(Color3::Red);
-    QCOMPARE(c3.isValid(), true);
-    QVERIFY(c3 == Color3::Red);
-    QCOMPARE(c3.toInt(), 0xFF0000);
-    QCOMPARE(c3.toString(), "Red");
+    // Проверка правильности основных преобразований
+    QCOMPARE(colorPen.toValue(), Color3::Invalid); // toValue()
+    QCOMPARE(colorPen.toInt(), -1); // toInt()
+    QCOMPARE(colorPen.toString(), "Invalid"); // toString()
 
-    // Color3(const Color3 &other)
-    c3 = Color3(Color3(Color3::Green));
-    QCOMPARE(c3.toInt(), 0x00FF00);
-    QCOMPARE(c3.toString(), "Green");
+    // Задание валидного значения
+    colorPen = Color3::Red; // operator =(Value val)
+    QCOMPARE(colorPen.isValid(), true);
 
-    // Color3(int val)
-    QCOMPARE(Color3(Color3::Green).toInt(), c3.toInt());
+    // Проверка правильности основных преобразований
+    QCOMPARE(colorPen.toValue(), Color3::Red);
+    QCOMPARE(colorPen.toInt(), 0xFF0000);
+    QCOMPARE(colorPen.toString(), "Red");
 
-    // Color3(const char * val)
-    QCOMPARE(Color3("Green").toInt(), c3.toInt());
+    // Создание объекта с известным значением
+    QCOMPARE(Color3(Color3::Green).toString(), "Green"); // Color3(Value val)
+    QCOMPARE(Color3(0x00FF00).toString(), "Green"); // Color3(int val)
+    QCOMPARE(Color3("Green").toString(), "Green"); // Color3(const char * val)
 
-    c3 = Color3::Blue; // operator =(Value val)
-    QVERIFY(c3 == Color3::Blue); // operator ==(Value val)
-
-    c3 = Color3("Blue"); // operator =(const Color3 &other)
-    QVERIFY(c3 == Color3("Blue")); // operator ==(const Color3 &other)
-    QCOMPARE(c3.toInt(), 0x0000FF);
-
-    // isValid()
-    QVERIFY(c3.isValid());
-
-    // fromInt(int val), toInt()
-    QVERIFY(Color3::fromInt(0xFFFFFF).toInt() == 0xFFFFFF);
-    QVERIFY(Color3::fromInt(-1).toInt() == -1);
-
-    // fromString(const char * val), toString()
-    QCOMPARE(Color3::fromString("Black").toString(), "Black");
+    // Сравнение объектов
+    QVERIFY(Color3(0x0000FF) == Color3("Blue")); // operator ==(const Color3 &other)
 
     // enumName()
     QCOMPARE(Color3::enumName(), "Color3");
@@ -186,11 +154,8 @@ void EnumTest::testColor4()
     c1 = Color4(Color4(Color4::Green));
     QCOMPARE(c1.toString(), "Green");
 
-    // Color4(int val)
-    QCOMPARE(Color4(Color4::Green).toInt(), c1.toInt());
-
     // Color4(const char * val)
-    QCOMPARE(Color4("Green").toInt(), c1.toInt());
+    QCOMPARE(Color4("Green"), c1);
 
     c1 = Color4::Blue; // operator =(Value val)
     QVERIFY(c1 == Color4::Blue); // operator ==(Value val)
@@ -200,13 +165,6 @@ void EnumTest::testColor4()
 
     // isValid()
     QVERIFY(c1.isValid());
-
-    // fromInt(int val), toInt()
-    QVERIFY(Color4::fromInt(int(Color4::White)).toInt() == int(Color4::White));
-    QVERIFY(Color4::fromInt(int(Color4::Invalid)).toInt() == int(Color4::Invalid));
-
-    // fromString(const char * val), toString()
-    QCOMPARE(Color4::fromString("Black").toString(), "Black");
 
     // enumName()
     QCOMPARE(Color4::enumName(), "Color4");
@@ -249,13 +207,6 @@ void EnumTest::testColor5()
 
     // isValid()
     QVERIFY(c1.isValid());
-
-    // fromInt(int val), toInt()
-    QVERIFY(Color5::fromInt(0xFF0000).toInt() == 0xFF0000);
-    QVERIFY(Color5::fromInt(0).toInt() == 0);
-
-    // fromString(const char * val), toString()
-    QCOMPARE(Color5::fromString("Black").toString(), "Black");
 
     // enumName()
     QCOMPARE(Color5::enumName(), "Color5");

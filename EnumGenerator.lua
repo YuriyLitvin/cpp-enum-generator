@@ -369,8 +369,7 @@ public:
     static const Value ValueInvalid = <<ValueInvalidName()>>;
 
     <<EnumName()>>(Value val = ValueInvalid) : m_ValueCur(val) {}
-    <<EnumName()>>(const <<EnumName()>> &other) : m_ValueCur(other.m_ValueCur) {}
-    explicit <<EnumName()>>(int val) : m_ValueCur(ValueInvalid)<<EnumNameConstructorIntBody()>>
+    <<EnumName()>>(const <<EnumName()>> &other) : m_ValueCur(other.m_ValueCur) {}<<EnumNameConstructorIntBody()>>
     explicit <<EnumName()>>(const char * val) : m_ValueCur(ValueInvalid)
     {
         int index = NS_JDSoft::NS_EnumGenerator::<<StringFind()>>(<<NamespaceValues()>>StringValues, ValueCount, val);
@@ -385,17 +384,11 @@ public:
 
     bool isValid() const { return m_ValueCur != ValueInvalid; }
 
-    static inline <<EnumName()>> fromInt(int val) { return <<EnumName()>>(val); }
-    int toInt() const<<EnumNameToIntBody()>>
-
-    static inline <<EnumName()>> fromString(const char * val) { return <<EnumName()>>(val); }
+    Value toValue() const { return m_ValueCur; }<<EnumNameStableIdBlock()>>
     const char * toString() const { return <<NamespaceValues()>>StringValues[m_ValueCur]; }<<EnumNameUserMethods(LineNewIndent = 4)>>
 
     static const char * enumName() { return "<<EnumName()>>"; }
-private:
-    <<EnumName()>> &operator =(int val); //! use fromInt() instead
-    operator int(); //! use toInt() instead<<EnumNameDataDeclaration(LineNewIndent = 4)>>
-private:
+private:<<EnumNameDataDeclaration(LineNewIndent = 4)>>
     Value m_ValueCur;
 };
 ]]
@@ -811,9 +804,9 @@ namespace <<EnumName()>>Private
 	end,
 	EnumNameDataDeclaration = function (part, opt)
 		local useCpp = opt and opt.useCpp
-		local res = "\n"
+		local res = ""
 		if useCpp then
-			res = res.."\n"..[[    static const char * const StringValues[ValueCount];<<EnumNameBodyDynamic(LineNewIndent = 4)>>]]
+			res = res.."\n"..[[    static const char * const StringValues[ValueCount];<<EnumNameBodyDynamic(LineNewIndent = 4)>>]].."\n"
 		end
 		return res
 	end,
@@ -861,11 +854,11 @@ namespace <<EnumName()>>Private
 		end
 		return nameNamespace
 	end,
-	EnumNameToIntBody = function (part, opt)
+	EnumNameStableIdBlock = function (part, opt)
 		if part.IDIntegerUse then
-			return " { return <<NamespaceValues()>>IDInteger[m_ValueCur]; }"
+			return "\n"..[[    int toInt() const { return <<NamespaceValues()>>IDInteger[m_ValueCur]; }]]
 		else
-			return " { return int(m_ValueCur); }"
+			return ""
 		end
 	end,
 	EnumNameConstructorIntBody = function (part, opt)
@@ -877,6 +870,7 @@ namespace <<EnumName()>>Private
 				nameArray = nameArray.."Sorted"
 			end
 			local template = "\n"..[[
+    explicit <<EnumName()>>(int val) : m_ValueCur(ValueInvalid)
     {
         int index = NS_JDSoft::NS_EnumGenerator::<<NameFunctionAny>>(<<NameArrayAny>>, ValueCount, val);
         if (index >= 0) m_ValueCur = Value(index);
@@ -886,7 +880,7 @@ namespace <<EnumName()>>Private
 			s = string.gsub(s, "<<NameArrayAny>>", nameArray)
 			return s
 		else
-			return " { if (val >= 0 && val < ValueCount) m_ValueCur = Value(val); }"
+			return ""
 		end
 	end,
 	IndexValues = function (part, opt)
