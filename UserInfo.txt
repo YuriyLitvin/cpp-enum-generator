@@ -1,0 +1,20 @@
+
+
+Enum-generator is a generator of cpp enumerations from csv-table.
+
+How to use?
+1) Download this project to your computer.
+2) Copy files "Enums.xls" and "Enums.lua" to your project directory.
+3) Edit new file "Enums.xls" in Excel or OpenOffice as you wish.
+4) Save edited "Enums.xls" as is and in format "csv" as "Enums.csv".
+5) Run script "Enums.lua".
+
+Output:
+You have simple, useful, safe, little and fast enumerations in files "Enums.hpp" and "Enums.cpp". Enjoy!
+
+
+You can donate a few dollars over PayPal as a token of gratitude to J_DSoft@ukr[.]net:
+https://www.paypal.com/ua/webapps/mpp/send-money-online
+
+Thank you for attention! Good luck! :)
+Yuriy Litvin, http://vk.com/yuriylitvin
